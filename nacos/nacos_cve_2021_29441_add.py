@@ -55,6 +55,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     if not args.url:
-        print("nacos地址不能为空")
-
-    send_request(args.url)
+        print("nacos地址不能为空!")
+    else:
+        send_request(args.url)
