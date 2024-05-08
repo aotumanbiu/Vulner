@@ -18,7 +18,7 @@ def send_request(url):
         full_url = url + mid_url + end_url
         try:
             response = requests.post(full_url, headers=headers, data=data, timeout=2)
-            if response.status_code == 200 and response.json()['accessToken']:
+            if response.status_code == 200 and response.json().get('accessToken'):
                 print(f'{url} 存在token.secret.key默认配置漏洞')
                 print(f'{response.json()}')
                 return
