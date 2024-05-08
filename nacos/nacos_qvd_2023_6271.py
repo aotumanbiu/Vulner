@@ -6,8 +6,8 @@ import threading
 +-----------------------------------------------------------------+
 漏洞名称:VMware vRealize Operations Manager SSRF漏洞 CVE-2021-21975  
 功能：基于dnslog回显进行检测，单个检测，批量检测                                     
-单个检测：python poc.py -u url -d domain
-批量检测：python poc.py -f 1.txt
+单个检测：python nacos_qvd_2023_6271.py -u url
+批量检测：python nacos_qvd_2023_6271.py -f file.txt
 +-----------------------------------------------------------------+                                     
 '''
 
